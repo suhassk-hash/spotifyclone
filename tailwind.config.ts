@@ -8,12 +8,19 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      height:{
+        '80p': '80vh',
+      },
       colors: {
         background: "linear-gradient(to right, #1f1f1f 0%, #1f1f1f 100%)",
         foreground: "var(--foreground)",
+        text:"#b2b2b2",
+        bg:"#121212",
+        box:"#1f1f1f",
       },
     },
   },
   plugins: [],
 };
 export default config;
+// {!session && <div className="color-white">Create your first playlist</div>}
