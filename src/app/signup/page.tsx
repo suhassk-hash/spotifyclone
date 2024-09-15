@@ -26,46 +26,46 @@ const SignupPage = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-                <h1 className="text-2xl font-semibold text-center text-gray-900 mb-6">Sign Up</h1>
+        <div className="flex flex-col items-center justify-center h-screen bg-black text-white">
+            <div className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
+                <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                    <div className="flex flex-col">
+                        <label htmlFor="username" className="text-sm font-semibold mb-2">Username</label>
                         <input
                             type="text"
                             id="username"
-                            placeholder="Username"
+                            placeholder="Enter your username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="p-3 rounded-md bg-gray-700 text-white border border-gray-600 outline-none focus:border-green-500"
                         />
                     </div>
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                    <div className="flex flex-col">
+                        <label htmlFor="email" className="text-sm font-semibold mb-2">Email</label>
                         <input
                             type="email"
                             id="email"
-                            placeholder="Email"
+                            placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="p-3 rounded-md bg-gray-700 text-white border border-gray-600 outline-none focus:border-green-500"
                         />
                     </div>
-                    <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                    <div className="flex flex-col">
+                        <label htmlFor="password" className="text-sm font-semibold mb-2">Password</label>
                         <input
                             type="password"
                             id="password"
-                            placeholder="Password"
+                            placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="p-3 rounded-md bg-gray-700 text-white border border-gray-600 outline-none focus:border-green-500"
                         />
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="w-full py-3 bg-green-600 rounded-md text-white font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                     >
                         Sign Up
                     </button>

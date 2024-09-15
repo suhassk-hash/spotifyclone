@@ -23,7 +23,7 @@ const Left = () => {
                         <div className="color-white mx-2 bg-box py-2 pb-8 px-4 rounded-md">
                             <p className="text-m">Create your first playlist</p>
         
-                            <p className="text-xs py-1">It`&apos;`s easy, we`&apos;`ll help you</p>
+                            <p className="text-xs py-1">It&apos;s easy, we&apos;ll help you</p>
                             <button
                                 type="button"
                                 className="bg-white text-gray-800 mt-4 rounded-full"
