@@ -22,7 +22,7 @@ const Header = ({ page }: HeaderProps) => {
     return (
         <header className="h-16 ">
             <div className="flex items-center px-6 h-full">
-                <img
+                    <Image
                     src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/spotify-white-icon.png"
                     alt="Spotify Icon"
                     className="w-20 py-2 px-6"
