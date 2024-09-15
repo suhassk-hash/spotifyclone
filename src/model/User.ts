@@ -1,23 +1,31 @@
-
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface Person extends Document{
-    username:string,
-    password:string,
-    role:string,
-    email:string,
-    joinedOn:Date,
+
+interface Playlist {
+    name: string;
+    songs: string[]; 
 }
 
 
-const PersonSchema = new Schema({
-    username: { type: String, required: true },
+export interface User extends Document {
+    username: string;
+    password: string;
+    playlists: Playlist[]; 
+}
+
+
+const PlaylistSchema = new Schema({
+    name: { type: String, required: true },
+    songs: [{ type: String }]
+});
+
+
+const UserSchema = new Schema({
+    username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, required: true },
-    email: { type: String, required: true },
-    joinedOn: { type: Date, required: true },
-})
+    playlists: [PlaylistSchema] 
+});
 
 
-const personModel = (mongoose.models.Person as mongoose.Model<Person>) || mongoose.model<Person>("Person", PersonSchema);
-export default personModel;
+const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema);
+export default UserModel;
