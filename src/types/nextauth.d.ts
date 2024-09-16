@@ -14,7 +14,7 @@ declare module 'next-auth' {
             _id?: string;
             username?: string;
             email?: string;
-            playlists?: Playlist[]; // Add playlists if needed
+            playlists?: Playlist[];
         } & DefaultSession['user'];
     }
 
@@ -22,7 +22,7 @@ declare module 'next-auth' {
         _id?: string;
         username?: string;
         email?: string;
-        playlists?: Playlist[]; // Add playlists if needed
+        playlists?: Playlist[];
     }
 }
 
@@ -32,6 +32,6 @@ declare module 'next-auth/jwt' {
         _id?: string;
         username?: string;
         email?: string;
-        playlists?: Playlist[]; // Add playlists if needed
+        playlists?: Playlist[];
     }
 }

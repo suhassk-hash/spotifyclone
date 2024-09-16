@@ -30,63 +30,73 @@ const MusicPlayer: React.FC = () => {
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(1);
     const [isMuted, setIsMuted] = useState(false);
-    const audioRef = useRef<HTMLAudioElement | null>(new Audio(tracks[trackIndex].audioSrc));
+    const audioRef = useRef<HTMLAudioElement | null>(null);
     const intervalRef = useRef<number | null>(null);
 
     useEffect(() => {
-        const audio = audioRef.current;
-        if (!audio) return;
+        // Initialize Audio
+        if (audioRef.current) {
+            audioRef.current.src = tracks[trackIndex].audioSrc;
+            audioRef.current.volume = volume;
 
-        audio.src = tracks[trackIndex].audioSrc;
-        audio.volume = volume;
+            // Set duration when metadata is loaded
+            const handleMetadata = () => {
+                if (audioRef.current) {
+                    setDuration(audioRef.current.duration);
+                }
+            };
 
-        const handleMetadata = () => {
-            setDuration(audio.duration);
-        };
+            // Update track progress
+            const handleTimeUpdate = () => {
+                if (audioRef.current) {
+                    setTrackProgress(audioRef.current.currentTime);
+                }
+            };
 
-        const handleTimeUpdate = () => {
-            setTrackProgress(audio.currentTime);
-        };
+            // Add event listeners
+            audioRef.current.addEventListener('loadedmetadata', handleMetadata);
+            audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
 
-        audio.addEventListener('loadedmetadata', handleMetadata);
-        audio.addEventListener('timeupdate', handleTimeUpdate);
-
-        return () => {
-            audio.removeEventListener('loadedmetadata', handleMetadata);
-            audio.removeEventListener('timeupdate', handleTimeUpdate);
-        };
+            // Cleanup event listeners
+            return () => {
+                if (audioRef.current) {
+                    audioRef.current.removeEventListener('loadedmetadata', handleMetadata);
+                    audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+                }
+            };
+        }
     }, [trackIndex, volume]);
 
     const play = () => {
-        audioRef.current?.play();
-        setIsPlaying(true);
-        intervalRef.current = window.setInterval(() => {
-            if (audioRef.current) {
-                setTrackProgress(audioRef.current.currentTime);
-            }
-        }, 1000);
+        if (audioRef.current) {
+            audioRef.current.play();
+            setIsPlaying(true);
+            intervalRef.current = window.setInterval(() => {
+                if (audioRef.current) {
+                    setTrackProgress(audioRef.current.currentTime);
+                }
+            }, 1000);
+        }
     };
 
     const pause = () => {
-        audioRef.current?.pause();
-        setIsPlaying(false);
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
+        if (audioRef.current) {
+            audioRef.current.pause();
+            setIsPlaying(false);
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
         }
     };
 
     const skipForward = () => {
         pause();
         setTrackIndex((prevIndex) => (prevIndex + 1) % tracks.length);
-        audioRef.current = new Audio(tracks[(trackIndex + 1) % tracks.length].audioSrc);
-        play();
     };
 
     const skipBackward = () => {
         pause();
         setTrackIndex((prevIndex) => (prevIndex - 1 + tracks.length) % tracks.length);
-        audioRef.current = new Audio(tracks[(trackIndex - 1 + tracks.length) % tracks.length].audioSrc);
-        play();
     };
 
     const onScrub = (value: number) => {
@@ -111,6 +121,18 @@ const MusicPlayer: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        // Create new audio element when trackIndex changes
+        audioRef.current = new Audio(tracks[trackIndex].audioSrc);
+        // Cleanup previous audio element
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.src = "";
+            }
+        };
+    }, [trackIndex]);
+
     return (
         <div className="fixed bottom-0 left-0 w-full text-white p-4 flex flex-col items-center">
             <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-between">
@@ -118,7 +140,7 @@ const MusicPlayer: React.FC = () => {
                     <h2 className="text-lg font-bold">{tracks[trackIndex].title}</h2>
                     <h3 className="text-sm text-gray-400">{tracks[trackIndex].artist}</h3>
                 </div>
-                
+
                 <div className="flex flex-col items-center mb-4 md:mb-0">
                     <div className="flex space-x-4">
                         <button onClick={skipBackward} className="text-white p-2">
@@ -131,7 +153,7 @@ const MusicPlayer: React.FC = () => {
                             <FaForward size={24} />
                         </button>
                     </div>
-                    
+
                     <input
                         type="range"
                         value={trackProgress}

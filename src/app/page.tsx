@@ -4,7 +4,7 @@ import MusicPlayer from "./components/VideoPlayer";
 export default function Home() {
     return (
         <div>
-            <Header page="Home"/>
+            <Header/>
             <MusicPlayer/>
         </div>
     );

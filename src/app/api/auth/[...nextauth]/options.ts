@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import bcrypt from 'bcryptjs';
 import dbConnect from '../../../../lib/dbConnect';
 import UserModel from '../../../../model/User';
+import { User as NextAuthUser } from 'next-auth';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -14,7 +15,7 @@ export const authOptions: NextAuthOptions = {
                 username: { label: 'Username', type: 'text' },
                 password: { label: 'Password', type: 'password' },
             },
-            async authorize(credentials) : Promise<any>{
+            async authorize(credentials): Promise<NextAuthUser | null> {
                 if (!credentials) {
                     return null;
                 }
@@ -24,7 +25,7 @@ export const authOptions: NextAuthOptions = {
 
                 if (userDoc && bcrypt.compareSync(credentials.password, userDoc.password)) {
                     return {
-                        _id: userDoc.id.toString(),
+                        id: userDoc.id.toString(),
                         username: userDoc.username,
                         playlists: userDoc.playlists,
                     };
@@ -45,7 +46,7 @@ export const authOptions: NextAuthOptions = {
                     _id: token._id as string,
                     username: token.username as string,
                     email: token.email as string,
-                    playlists: token.playlists, // Ensure playlists are included
+                    playlists: token.playlists,
                 };
             }
             return session;
@@ -55,7 +56,7 @@ export const authOptions: NextAuthOptions = {
                 token._id = user._id as string;
                 token.username = user.username as string;
                 token.email = user.email as string;
-                token.playlists = user.playlists; // Ensure playlists are included
+                token.playlists = user.playlists;
             }
             return token;
         },
