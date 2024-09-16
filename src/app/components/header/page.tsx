@@ -26,7 +26,7 @@ const Header: React.FC = () => {
     };
 
     return (
-        <header className="h-16 bg-black text-white flex items-center px-6 shadow-md fixed top-0 left-0 right-0 z-50">
+        <header className="h-16 bg-black text-white flex items-center px-6 shadow-md top-0 left-0 right-0 z-50">
             <Image
                 src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/spotify-white-icon.png"
                 alt="Spotify Icon"
