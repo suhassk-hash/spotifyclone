@@ -1,5 +1,5 @@
-import Header from "./(components)/header/page";
-import MusicPlayer from "./(components)/VideoPlayer";
+import Header from "./components/header/page";
+import MusicPlayer from "./components/VideoPlayer";
 
 export default function Home() {
     return (
