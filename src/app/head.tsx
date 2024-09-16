@@ -5,7 +5,7 @@ export default function Head() {
 
     return (
         <div>
-           <Header page="Home"/>
+           <Header/>
             
         </div>
     );
