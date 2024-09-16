@@ -4,30 +4,26 @@ import search from "../../images/clipart742441.png";
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-// Define a props interface
 interface HeaderProps {
-    page: string;
+    page?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ page }) => {
+const Header: React.FC<HeaderProps> = ({ page}) => {
     const router = useRouter();
     const { data: session } = useSession();
-
-    console.log('Session Data:', session); // Log session data to see if it's being fetched
 
     const handleSearchClick = () => {
         router.push('/search');
     };
 
     return (
-        <div>
-        <header className="h-16 ">
+        <header className="h-16">
             <div className="flex items-center px-6 h-full">
                 <Image
                     src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/spotify-white-icon.png"
                     alt="Spotify Icon"
-                    width={80} 
-                    height={40} 
+                    width={80}
+                    height={40}
                     className="py-2 px-6"
                 />
                 <div className="flex-grow flex items-center justify-center">
@@ -112,10 +108,8 @@ const Header: React.FC<HeaderProps> = ({ page }) => {
                     )}
                 </div>
             </div>
+            
         </header>
-        <div>
-        </div>
-        </div>
     );
 };
 
