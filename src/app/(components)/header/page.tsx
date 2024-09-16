@@ -20,6 +20,7 @@ const Header: React.FC<HeaderProps> = ({ page }) => {
     };
 
     return (
+        <div>
         <header className="h-16 ">
             <div className="flex items-center px-6 h-full">
                 <Image
@@ -112,6 +113,9 @@ const Header: React.FC<HeaderProps> = ({ page }) => {
                 </div>
             </div>
         </header>
+        <div>
+        </div>
+        </div>
     );
 };
 
