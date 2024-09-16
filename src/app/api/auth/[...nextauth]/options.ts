@@ -1,8 +1,6 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-// import FacebookProvider from 'next-auth/providers/facebook';
-// import AppleProvider from 'next-auth/providers/apple';
 import bcrypt from 'bcryptjs';
 import dbConnect from '../../../../lib/dbConnect';
 import UserModel from '../../../../model/User';
@@ -16,16 +14,20 @@ export const authOptions: NextAuthOptions = {
                 username: { label: 'Username', type: 'text' },
                 password: { label: 'Password', type: 'password' },
             },
-            async authorize(credentials) {
+            async authorize(credentials) : Promise<any>{
                 if (!credentials) {
                     return null;
                 }
 
                 await dbConnect();
-                const user = await UserModel.findOne({ username: credentials.username });
+                const userDoc = await UserModel.findOne({ username: credentials.username });
 
-                if (user && bcrypt.compareSync(credentials.password, user.password)) {
-                    return user;
+                if (userDoc && bcrypt.compareSync(credentials.password, userDoc.password)) {
+                    return {
+                        _id: userDoc.id.toString(),
+                        username: userDoc.username,
+                        playlists: userDoc.playlists,
+                    };
                 }
 
                 return null;
@@ -35,31 +37,25 @@ export const authOptions: NextAuthOptions = {
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
-        // FacebookProvider({
-        //     clientId: process.env.FACEBOOK_CLIENT_ID!,
-        //     clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
-        // }),
-        // AppleProvider({
-        //     clientId: process.env.APPLE_CLIENT_ID!,
-        //     clientSecret: process.env.APPLE_CLIENT_SECRET!,
-        // }),
     ],
     callbacks: {
         async session({ session, token }) {
             if (token) {
                 session.user = {
-                    id: token.id,
-                    email: token.email,
-                    name: token.name,
+                    _id: token._id as string,
+                    username: token.username as string,
+                    email: token.email as string,
+                    playlists: token.playlists, // Ensure playlists are included
                 };
             }
             return session;
         },
         async jwt({ user, token }) {
             if (user) {
-                token.id = user.id;
-                token.email = user.email;
-                token.name = user.name;
+                token._id = user._id as string;
+                token.username = user.username as string;
+                token.email = user.email as string;
+                token.playlists = user.playlists; // Ensure playlists are included
             }
             return token;
         },
